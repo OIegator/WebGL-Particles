@@ -6,106 +6,6 @@ import {mat4} from "gl-matrix";
 const canvas = document.querySelector('canvas');
 let gl;
 
-// function initWebGL(canvas) {
-//     gl = null
-//     const names = ["webgl2", "webgl", "experimental-webgl", "webkit-3d", "moz-webgl"];
-//     for (let ii = 0; ii < names.length; ++ii) {
-//         try {
-//             gl = canvas.getContext(names[ii]);
-//         } catch (e) {
-//         }
-//         if (gl) {
-//             break;
-//         }
-//     }
-//
-//     if (!gl) {
-//         alert("Unable to initialize WebGL. Your browser may not support it.");
-//         gl = null;
-//     }
-//     return gl;
-// }
-//
-//
-// function main() {
-//     gl = initWebGL(canvas);
-//
-//     gl.enable(gl.BLEND);
-//     gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-//
-//     const sparkTexture = loadTexture(gl, spark_texture);
-//
-//     let trackProgram = initShaderProgram(gl, tracksVS, tracksFS);
-//     let sparkProgram = initShaderProgram(gl, sparkVS, sparkFS);
-//
-//     const programInfo = {
-//         track_program: trackProgram,
-//         spark_program: sparkProgram,
-//         attribLocations: {
-//             positionAttributeLocationTrack:
-//                 gl.getAttribLocation(trackProgram, "a_position"),
-//             colorAttributeLocationTrack:
-//                 gl.getAttribLocation(trackProgram, "a_color"),
-//             positionAttributeLocationSpark:
-//                 gl.getAttribLocation(sparkProgram, "a_position"),
-//         },
-//         uniformLocations: {
-//             pMatrixUniformLocationTrack:
-//                 gl.getUniformLocation(trackProgram, "u_pMatrix"),
-//             mvMatrixUniformLocationTrack:
-//                 gl.getUniformLocation(trackProgram, "u_mvMatrix"),
-//             textureLocationSpark:
-//                 gl.getUniformLocation(sparkProgram, "u_texture"),
-//             pMatrixUniformLocationSpark:
-//                 gl.getUniformLocation(sparkProgram, "u_pMatrix"),
-//             mvMatrixUniformLocationSpark:
-//                 gl.getUniformLocation(sparkProgram, "u_mvMatrix"),
-//         },
-//
-//     };
-//
-//     const mvMatrix = mat4.create();
-//     const pMatrix = mat4.create();
-//
-//     const sparks = [];
-//     for (let i = 0; i < Spark.sparksCount; i++) {
-//         sparks.push(new Spark());
-//     }
-//
-//     let now = new Date();
-//     function render(now) {
-//
-//         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-//
-//         gl.clearColor(0, 0, 0, 1);
-//         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-//
-//         mat4.perspective(pMatrix, 45, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
-//         mat4.identity(mvMatrix);
-//         mat4.translate(mvMatrix, mvMatrix, [0, 0, -3.5]);
-//
-//         for (let i = 0; i < sparks.length; i++) {
-//             sparks[i].move(now);
-//         }
-//
-//         const positions = [];
-//         sparks.forEach(function (item, i, arr) {
-//             positions.push(item.x);
-//             positions.push(item.y);
-//             // искры двигаются только в одной плоскости xy
-//             positions.push(0);
-//         });
-//
-//         drawTracks(gl, programInfo, positions, pMatrix, mvMatrix);
-//         drawSparks(gl, programInfo, sparkTexture, positions, pMatrix, mvMatrix);
-//
-//         requestAnimationFrame(render);
-//     }
-//
-//     requestAnimationFrame(render);
-// }
-//
-
 function initShaderProgram(gl, vsSource, fsSource) {
     const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
     const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
@@ -136,14 +36,14 @@ function loadShader(gl, type, source) {
     return shader;
 }
 
-function Spark() {
+function Snowflake() {
     this.init();
 }
 
 // количество искр
-Spark.sparksCount = 1000;
+Snowflake.sparksCount = 1000;
 
-Spark.prototype.init = function () {
+Snowflake.prototype.init = function () {
     // время создания снежинки
     this.timeFromCreation = performance.now();
 
@@ -184,7 +84,7 @@ Spark.prototype.init = function () {
     this.xChangeSpeed = xChangeSpeed;
 };
 
-Spark.prototype.move = function (time) {
+Snowflake.prototype.move = function (time) {
     // находим разницу между вызовами отрисовки, чтобы анимация работала
     // одинаково на компьютерах разной мощности
     const timeShift = time - this.timeFromCreation;
@@ -211,6 +111,7 @@ Spark.prototype.move = function (time) {
     this.x = x;
     this.y = this.y;
 };
+
 
 
 
@@ -276,8 +177,8 @@ function main() {
     }
 
     const sparks = [];
-    for (let i = 0; i < Spark.sparksCount; i++) {
-        sparks.push(new Spark());
+    for (let i = 0; i < Snowflake.sparksCount; i++) {
+        sparks.push(new Snowflake());
     }
 
     function drawScene(now) {
